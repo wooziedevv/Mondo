@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mondo Spagetti - Dijital Menü</title>
+    <!-- Google Fonts & Tailwind CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons & QR Code Engine -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#9e1b1b',
+                            redDark: '#781212',
+                            bg: '#121212',
+                            card: '#1c1c1e',
+                            gold: '#d4af37',
+                            goldLight: '#f3e5ab'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .tab-active { color: #d4af37; border-bottom: 2px solid #d4af37; font-weight: 700; }
+    </style>
+</head>
+<body class="bg-brand-bg text-gray-100 font-sans min-h-screen pb-24 selection:bg-brand-gold selection:text-black">
+
+    <!-- Header / Banner -->
+    <header class="relative bg-gradient-to-b from-black via-brand-card to-brand-bg pt-8 pb-6 px-4 border-b border-white/10 text-center shadow-2xl">
+        <div class="max-w-md mx-auto">
+            <h1 class="font-serif text-3xl font-extrabold text-brand-gold tracking-wide uppercase drop-shadow-md">
+                Mondo Spagetti
+            </h1>
+            <p class="text-xs text-gray-400 italic mt-1 tracking-widest font-serif">Dalından Sofranıza</p>
+            
+            <!-- Quick Info & Wifi -->
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-300">
+                <a href="https://www.mondospagetti.com" target="_blank" class="flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10 transition">
+                    <i data-lucide="globe" class="w-3.5 h-3.5 text-brand-gold"></i>
+                    <span>mondospagetti.com</span>
+                </a>
+                <a href="tel:02882122528" class="flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10 transition">
+                    <i data-lucide="phone" class="w-3.5 h-3.5 text-brand-gold"></i>
+                    <span>0288 212 25 28</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search & Filters Sticky Bar -->
+    <div class="sticky top-0 z-30 bg-brand-bg/95 backdrop-blur-md border-b border-white/10 shadow-lg">
+        <div class="max-w-md mx-auto px-4 py-3">
+            <!-- Search Input -->
+            <div class="relative">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                <input type="text" id="searchInput" oninput="filterItems()" placeholder="Menüde lezzet ara... (örn: pesto, tavuk, mantar)" 
+                    class="w-full bg-brand-card text-sm text-white placeholder-gray-500 pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-brand-gold transition">
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="flex gap-4 overflow-x-auto no-scrollbar mt-3 text-sm font-medium border-b border-white/5">
+                <button onclick="switchTab('makarnalar')" id="tab-makarnalar" class="tab-btn py-2 whitespace-nowrap transition tab-active">🍝 Makarnalar</button>
+                <button onclick="switchTab('tava')" id="tab-tava" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥘 Tava Yemekleri</button>
+                <button onclick="switchTab('salata')" id="tab-salata" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥗 Salatalar</button>
+                <button onclick="switchTab('ekstra')" id="tab-ekstra" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🧀 Ekstralar</button>
+                <button onclick="switchTab('icecek')" id="tab-icecek" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥤 İçecekler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-md mx-auto px-4 pt-4">
+
+        <!-- Portion Info Banner (Only visible on Makarnalar) -->
+        <div id="portionBanner" class="bg-gradient-to-r from-brand-red/30 via-brand-card to-brand-card p-3.5 rounded-2xl border border-brand-red/40 mb-5 shadow-sm">
+            <div class="flex items-center gap-2 text-brand-gold font-medium text-xs mb-1">
+                <i data-lucide="info" class="w-4 h-4"></i>
+                <span>Porsiyon Tercihleri</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center text-xs text-gray-300">
+                <div class="bg-black/30 p-2 rounded-lg border border-white/5">
+                    <span class="block font-semibold text-white">Yarım (0.5x)</span>
+                    <span class="text-[11px] text-gray-400">225 ₺</span>
+                </div>
+                <div class="bg-black/30 p-2 rounded-lg border border-white/5">
+                    <span class="block font-semibold text-white">1.5 Porsiyon</span>
+                    <span class="text-[11px] text-brand-gold">+100 ₺</span>
+                </div>
+                <div class="bg-black/30 p-2 rounded-lg border border-white/5">
+                    <span class="block font-semibold text-white">Double (2x)</span>
+                    <span class="text-[11px] text-brand-gold">+150 ₺</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Category Views -->
+        <div id="menuContainer">
+            <!-- Items generated via JavaScript -->
+        </div>
+
+        <!-- Static Permanent QR Code Modal Trigger Section -->
+        <div class="mt-12 text-center border-t border-white/10 pt-8 pb-4">
+            <button onclick="openQRModal()" class="inline-flex items-center gap-2 bg-brand-card hover:bg-white/10 text-brand-gold text-xs font-semibold px-4 py-2.5 rounded-xl border border-brand-gold/30 transition">
+                <i data-lucide="qr-code" class="w-4 h-4"></i>
+                <span>Masa Üstü QR Kodu Görüntüle</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brand-card border border-white/10 rounded-2xl p-6 max-w-xs w-full text-center relative shadow-2xl">
+            <button onclick="closeQRModal()" class="absolute right-4 top-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="font-serif text-lg text-brand-gold font-bold mb-1">Mondo Spagetti</h3>
+            <p class="text-xs text-gray-400 mb-4">Sabit QR Kod Adresi</p>
+            
+            <div class="bg-white p-4 rounded-xl inline-block mb-3 shadow-inner" id="qrcode"></div>
+            
+            <p class="text-[11px] text-gray-400 break-all mb-4 bg-black/40 p-2 rounded-lg border border-white/5 font-mono">
+                https://mondospagetti.com/menu
+            </p>
+            <p class="text-xs text-gray-300">
+                Bu QR kod sabittir. Fiyatlar ve ürünler güncellense dahi masadaki kod değişmez.
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        const menuData = {
+            makarnalar: [
+                { name: "Romano", desc: "Krema, mantar, tavuk, kaşar ve kekik", price: 280 },
+                { name: "Milano", desc: "Krema, kuru domates, tavuk, kaşar ve kekik", price: 305 },
+                { name: "Bolonez", desc: "Özel domates sosu, dana kıyma ve kaşar", price: 275 },
+                { name: "Napoliten", desc: "Özel domates sosu ve kaşar", price: 260 },
+                { name: "Arabiata", desc: "Özel domates sosu, şili biberi ve kaşar", price: 265 },
+                { name: "Alfredo", desc: "Izgara tavuk, mantar, krema, sarımsak, parmesan ve kekik", price: 310 },
+                { name: "Karidesli", desc: "Karides, krema, parmesan", price: 350 },
+                { name: "Pesto", desc: "Özel fesleğen sosu, krema ve parmesan", price: 275 },
+                { name: "Dört Peynirli", desc: "Kaşar, mozarella, parmesan ve cheddar peyniri", price: 285 },
+                { name: "Domatesli Peynirli", desc: "Taze domates, beyaz peynir ve kekik", price: 265 },
+                { name: "Kremalı Mantarlı", desc: "Krema, mantar ve kaşar", price: 250 },
+                { name: "Pestomano", desc: "Özel fesleğen sosu, tavuk, mantar, krema ve parmesan", price: 295 },
+                { name: "Körili Soslu", desc: "Köri sosu, tavuk, krema ve kaşar", price: 275 },
+                { name: "Barbekü Soslu", desc: "Barbekü sosu, tavuk, krema ve kaşar", price: 275 },
+                { name: "Çıtır Tavuklu", desc: "Çıtır tavuk, krema ve barbekü sosu", price: 295 },
+                { name: "Mini Köfteli", desc: "Mini köfte, domates sosu ve kaşar", price: 285 },
+                { name: "Limonlu", desc: "Tavuk, krema, limon sosu ve kaşar", price: 275 },
+                { name: "Sebzeli", desc: "Özel domates sosu, kapya biber, yeşil biber ve kaşar", price: 265 },
+                { name: "Sosisli", desc: "Özel domates sosu, sosis ve kaşar", price: 270 },
+                { name: "Ballı Hardallı", desc: "Ballı hardal sosu, tavuk, krema ve kaşar", price: 285 },
+                { name: "Ispanaklı", desc: "Ispanak, mantar, krema ve parmesan", price: 285 },
+                { name: "Yaz Makarnası (Soğuk Servis)", desc: "Közlenmiş biber, turşu, mısır, hindi füme ve yoğurt", price: 285 }
+            ],
+            tava: [
+                { name: "Köri Soslu Tavuk", desc: "Köri sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 },
+                { name: "Barbekü Soslu Tavuk", desc: "Barbekü sos, yeşil biber, mantar, tavuk ve krema", price: 350 },
+                { name: "Ballı Hardallı Tavuk", desc: "Ballı hardal sos, kapya biber, mantar, mısır, tavuk ve krema", price: 350 },
+                { name: "Misket Köfteli Tava", desc: "Dana misket köfte, kapya biber, domates sosu, yeşil biber", price: 340 },
+                { name: "Pesto Soslu Tavuk", desc: "Fesleğen sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 }
+            ],
+            salata: [
+                { name: "Sezar Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve sezar sos", price: 300 },
+                { name: "Izgara Tavuklu Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve özel sos", price: 300 },
+                { name: "Çıtır Tavuklu Salata", desc: "Akdeniz yeşillikleri ve kızarmış çıtır tavuk", price: 295 },
+                { name: "Ton Balıklı Salata", desc: "Akdeniz yeşillikleri ve ton balığı", price: 305 },
+                { name: "Mini Köfteli Salata", desc: "Akdeniz yeşillikleri ve mini köfte", price: 290 },
+                { name: "Ton Balıklı Salata (Soğuk Servis)", desc: "Özel Akdeniz sosu, turşu, mısır, kapya biber ve ton balığı", price: 285 }
+            ],
+            ekstra: [
+                { name: "Ekstra Malzeme Ekleme", desc: "Krema, Tavuk, Mantar, Kaşar, Parmesan (Makarna, tava yemekleri ya da salatalara ek)", price: 50 }
+            ],
+            icecek: [
+                { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve suyu", price: 90 },
+                { name: "Litrelik İçecekler", desc: "Kola ve portakallı gazoz", price: 135 },
+                { name: "Küçük Ayran", desc: "Ferahlatıcı ayran", price: 35 },
+                { name: "Büyük Ayran", desc: "Ferahlatıcı büyük boy ayran", price: 45 },
+                { name: "Şişe İçecekler", desc: "Soda, gazoz, limonata, kola, portakallı gazoz", price: 45 },
+                { name: "Su (Pet Şişe)", desc: "0.5L Doğal Kaynak Suyu", price: 20 }
+            ]
+        };
+
+        let currentTab = 'makarnalar';
+
+        function renderMenu(category, searchFilter = '') {
+            const container = document.getElementById('menuContainer');
+            const portionBanner = document.getElementById('portionBanner');
+            
+            // Toggle portion banner visibility
+            if (category === 'makarnalar' && !searchFilter) {
+                portionBanner.classList.remove('hidden');
+            } else {
+                portionBanner.classList.add('hidden');
+            }
+
+            const items = menuData[category] || [];
+            const filteredItems = items.filter(item => 
+                item.name.toLowerCase().includes(searchFilter.toLowerCase()) || 
+                item.desc.toLowerCase().includes(searchFilter.toLowerCase())
+            );
+
+            if (filteredItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500 text-sm">
+                        Aradığınız lezzet bulunamadı.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredItems.map(item => `
+                <div class="bg-brand-card border border-white/5 rounded-2xl p-4 mb-3 flex justify-between items-start gap-4 hover:border-brand-gold/30 transition shadow-sm">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-base text-white font-serif tracking-wide">${item.name}</h3>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">${item.desc}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block bg-black/40 text-brand-gold font-bold text-sm px-3 py-1.5 rounded-xl border border-brand-gold/20">
+                            ${item.price} ₺
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-gray-400');
+            });
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('tab-active');
+            activeBtn.classList.remove('text-gray-400');
+            
+            document.getElementById('searchInput').value = '';
+            renderMenu(tab);
+        }
+
+        function filterItems() {
+            const query = document.getElementById('searchInput').value;
+            renderMenu(currentTab, query);
+        }
+
+        // QR Code Modal Handlers
+        let qrGenerated = false;
+        function openQRModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+            if (!qrGenerated) {
+                new QRCode(document.getElementById("qrcode"), {
+                    text: "https://mondospagetti.com/menu",
+                    width: 160,
+                    height: 160,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+                qrGenerated = true;
+            }
+        }
+
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        // Initial Load
+        document.addEventListener("DOMContentLoaded", () => {
+            renderMenu('makarnalar');
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
