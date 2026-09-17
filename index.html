@@ -49,7 +49,7 @@
             </h1>
             <p class="text-xs text-gray-400 italic mt-1 tracking-widest font-serif">Dalından Sofranıza</p>
             
-            <!-- Quick Info & Wifi -->
+            <!-- Quick Info -->
             <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-300">
                 <a href="https://www.mondospagetti.com" target="_blank" class="flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10 transition">
                     <i data-lucide="globe" class="w-3.5 h-3.5 text-brand-gold"></i>
@@ -69,7 +69,7 @@
             <!-- Search Input -->
             <div class="relative">
                 <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                <input type="text" id="searchInput" oninput="filterItems()" placeholder="Menüde lezzet ara... (örn: pesto, tavuk, mantar)" 
+                <input type="text" id="searchInput" oninput="filterItems()" placeholder="Menüde lezzet ara... (örn: pesto, ayran, kola)" 
                     class="w-full bg-brand-card text-sm text-white placeholder-gray-500 pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-brand-gold transition">
             </div>
 
@@ -79,7 +79,7 @@
                 <button onclick="switchTab('tava')" id="tab-tava" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥘 Tava Yemekleri</button>
                 <button onclick="switchTab('salata')" id="tab-salata" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥗 Salatalar</button>
                 <button onclick="switchTab('ekstra')" id="tab-ekstra" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🧀 Ekstralar</button>
-                <button onclick="switchTab('icecek')" id="tab-icecek" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥤 İçecekler</button>
+                <button onclick="switchTab('icecekler')" id="tab-icecekler" class="tab-btn py-2 whitespace-nowrap transition text-gray-400">🥤 İçecekler</button>
             </div>
         </div>
     </div>
@@ -110,11 +110,9 @@
         </div>
 
         <!-- Menu Category Views -->
-        <div id="menuContainer">
-            <!-- Items generated via JavaScript -->
-        </div>
+        <div id="menuContainer"></div>
 
-        <!-- Static Permanent QR Code Modal Trigger Section -->
+        <!-- Static Permanent QR Code Modal Trigger -->
         <div class="mt-12 text-center border-t border-white/10 pt-8 pb-4">
             <button onclick="openQRModal()" class="inline-flex items-center gap-2 bg-brand-card hover:bg-white/10 text-brand-gold text-xs font-semibold px-4 py-2.5 rounded-xl border border-brand-gold/30 transition">
                 <i data-lucide="qr-code" class="w-4 h-4"></i>
@@ -130,15 +128,15 @@
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
             <h3 class="font-serif text-lg text-brand-gold font-bold mb-1">Mondo Spagetti</h3>
-            <p class="text-xs text-gray-400 mb-4">Sabit QR Kod Adresi</p>
+            <p class="text-xs text-gray-400 mb-4">Sabit Masa Üstü QR Kod</p>
             
             <div class="bg-white p-4 rounded-xl inline-block mb-3 shadow-inner" id="qrcode"></div>
             
             <p class="text-[11px] text-gray-400 break-all mb-4 bg-black/40 p-2 rounded-lg border border-white/5 font-mono">
-                https://mondospagetti.com/menu
+                https://mondospagetti.com
             </p>
             <p class="text-xs text-gray-300">
-                Bu QR kod sabittir. Fiyatlar ve ürünler güncellense dahi masadaki kod değişmez.
+                Bu QR kod sabittir. Güncellemelerde basılı QR kodunuz değişmez.
             </p>
         </div>
     </div>
@@ -188,12 +186,12 @@
             ekstra: [
                 { name: "Ekstra Malzeme Ekleme", desc: "Krema, Tavuk, Mantar, Kaşar, Parmesan (Makarna, tava yemekleri ya da salatalara ek)", price: 50 }
             ],
-            icecek: [
-                { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve suyu", price: 90 },
-                { name: "Litrelik İçecekler", desc: "Kola ve portakallı gazoz", price: 135 },
-                { name: "Küçük Ayran", desc: "Ferahlatıcı ayran", price: 35 },
-                { name: "Büyük Ayran", desc: "Ferahlatıcı büyük boy ayran", price: 45 },
-                { name: "Şişe İçecekler", desc: "Soda, gazoz, limonata, kola, portakallı gazoz", price: 45 },
+            icecekler: [
+                { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve Suyu", price: 90 },
+                { name: "Litrelik İçecekler", desc: "Kola ve Portakallı Gazoz", price: 135 },
+                { name: "Küçük Ayran", desc: "Ferahlatıcı Ayran", price: 35 },
+                { name: "Büyük Ayran", desc: "Ferahlatıcı Büyük Boy Ayran", price: 45 },
+                { name: "Şişe İçecekler", desc: "Soda, Gazoz, Limonata, Kola, Portakallı Gazoz", price: 45 },
                 { name: "Su (Pet Şişe)", desc: "0.5L Doğal Kaynak Suyu", price: 20 }
             ]
         };
@@ -204,7 +202,6 @@
             const container = document.getElementById('menuContainer');
             const portionBanner = document.getElementById('portionBanner');
             
-            // Toggle portion banner visibility
             if (category === 'makarnalar' && !searchFilter) {
                 portionBanner.classList.remove('hidden');
             } else {
@@ -250,8 +247,10 @@
                 btn.classList.add('text-gray-400');
             });
             const activeBtn = document.getElementById(`tab-${tab}`);
-            activeBtn.classList.add('tab-active');
-            activeBtn.classList.remove('text-gray-400');
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active');
+                activeBtn.classList.remove('text-gray-400');
+            }
             
             document.getElementById('searchInput').value = '';
             renderMenu(tab);
@@ -262,13 +261,12 @@
             renderMenu(currentTab, query);
         }
 
-        // QR Code Modal Handlers
         let qrGenerated = false;
         function openQRModal() {
             document.getElementById('qrModal').classList.remove('hidden');
             if (!qrGenerated) {
                 new QRCode(document.getElementById("qrcode"), {
-                    text: "https://mondospagetti.com/menu",
+                    text: window.location.href || "https://mondospagetti.com",
                     width: 160,
                     height: 160,
                     colorDark : "#000000",
@@ -283,7 +281,6 @@
             document.getElementById('qrModal').classList.add('hidden');
         }
 
-        // Initial Load
         document.addEventListener("DOMContentLoaded", () => {
             renderMenu('makarnalar');
             lucide.createIcons();
