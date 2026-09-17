@@ -43,11 +43,17 @@
 
     <!-- Header / Banner -->
     <header class="relative bg-gradient-to-b from-black via-brand-card to-brand-bg pt-8 pb-6 px-4 border-b border-white/10 text-center shadow-2xl">
+        <!-- Language Switcher -->
+        <div class="absolute top-4 right-4 flex items-center bg-white/10 rounded-full p-1 border border-white/10 text-xs font-bold">
+            <button onclick="setLanguage('tr')" id="lang-tr" class="px-2.5 py-1 rounded-full transition bg-brand-gold text-black">TR</button>
+            <button onclick="setLanguage('en')" id="lang-en" class="px-2.5 py-1 rounded-full transition text-gray-400 hover:text-white">EN</button>
+        </div>
+
         <div class="max-w-md mx-auto">
             <h1 class="font-serif text-3xl font-extrabold text-brand-gold tracking-wide uppercase drop-shadow-md">
                 Mondo Spagetti
             </h1>
-            <p class="text-xs text-gray-400 italic mt-1 tracking-widest font-serif">Dalından Sofranıza</p>
+            <p id="sub-tagline" class="text-xs text-gray-400 italic mt-1 tracking-widest font-serif">Dalından Sofranıza</p>
             
             <!-- Quick Info -->
             <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-300">
@@ -69,7 +75,7 @@
             <!-- Search Input -->
             <div class="relative">
                 <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                <input type="text" id="searchInput" oninput="filterItems()" placeholder="Menüde lezzet ara... (örn: pesto, ayran, kola)" 
+                <input type="text" id="searchInput" oninput="filterItems()" placeholder="Menüde lezzet ara..." 
                     class="w-full bg-brand-card text-sm text-white placeholder-gray-500 pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-brand-gold transition">
             </div>
 
@@ -91,19 +97,19 @@
         <div id="portionBanner" class="bg-gradient-to-r from-brand-red/30 via-brand-card to-brand-card p-3.5 rounded-2xl border border-brand-red/40 mb-5 shadow-sm">
             <div class="flex items-center gap-2 text-brand-gold font-medium text-xs mb-1">
                 <i data-lucide="info" class="w-4 h-4"></i>
-                <span>Porsiyon Tercihleri</span>
+                <span id="portion-title">Porsiyon Tercihleri</span>
             </div>
             <div class="grid grid-cols-3 gap-2 text-center text-xs text-gray-300">
                 <div class="bg-black/30 p-2 rounded-lg border border-white/5">
-                    <span class="block font-semibold text-white">Yarım (0.5x)</span>
+                    <span id="portion-half" class="block font-semibold text-white">Yarım (0.5x)</span>
                     <span class="text-[11px] text-gray-400">225 ₺</span>
                 </div>
                 <div class="bg-black/30 p-2 rounded-lg border border-white/5">
-                    <span class="block font-semibold text-white">1.5 Porsiyon</span>
+                    <span id="portion-15" class="block font-semibold text-white">1.5 Porsiyon</span>
                     <span class="text-[11px] text-brand-gold">+100 ₺</span>
                 </div>
                 <div class="bg-black/30 p-2 rounded-lg border border-white/5">
-                    <span class="block font-semibold text-white">Double (2x)</span>
+                    <span id="portion-double" class="block font-semibold text-white">Double (2x)</span>
                     <span class="text-[11px] text-brand-gold">+150 ₺</span>
                 </div>
             </div>
@@ -116,7 +122,7 @@
         <div class="mt-12 text-center border-t border-white/10 pt-8 pb-4">
             <button onclick="openQRModal()" class="inline-flex items-center gap-2 bg-brand-card hover:bg-white/10 text-brand-gold text-xs font-semibold px-4 py-2.5 rounded-xl border border-brand-gold/30 transition">
                 <i data-lucide="qr-code" class="w-4 h-4"></i>
-                <span>Masa Üstü QR Kodu Görüntüle</span>
+                <span id="qr-btn-text">Masa Üstü QR Kodu Görüntüle</span>
             </button>
         </div>
     </main>
@@ -128,14 +134,14 @@
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
             <h3 class="font-serif text-lg text-brand-gold font-bold mb-1">Mondo Spagetti</h3>
-            <p class="text-xs text-gray-400 mb-4">Sabit Masa Üstü QR Kod</p>
+            <p id="qr-subtitle" class="text-xs text-gray-400 mb-4">Sabit Masa Üstü QR Kod</p>
             
             <div class="bg-white p-4 rounded-xl inline-block mb-3 shadow-inner" id="qrcode"></div>
             
             <p class="text-[11px] text-gray-400 break-all mb-4 bg-black/40 p-2 rounded-lg border border-white/5 font-mono">
                 https://mondoqrmenu.con.tc/Mondo/
             </p>
-            <p class="text-xs text-gray-300">
+            <p id="qr-footer-note" class="text-xs text-gray-300">
                 Bu QR kod sabittir. Güncellemelerde basılı QR kodunuz değişmez.
             </p>
         </div>
@@ -143,60 +149,179 @@
 
     <!-- JavaScript Data & Logic -->
     <script>
-        const menuData = {
-            makarnalar: [
-                { name: "Romano", desc: "Krema, mantar, tavuk, kaşar ve kekik", price: 280 },
-                { name: "Milano", desc: "Krema, kuru domates, tavuk, kaşar ve kekik", price: 305 },
-                { name: "Bolonez", desc: "Özel domates sosu, dana kıyma ve kaşar", price: 275 },
-                { name: "Napoliten", desc: "Özel domates sosu ve kaşar", price: 260 },
-                { name: "Arabiata", desc: "Özel domates sosu, şili biberi ve kaşar", price: 265 },
-                { name: "Alfredo", desc: "Izgara tavuk, mantar, krema, sarımsak, parmesan ve kekik", price: 310 },
-                { name: "Karidesli", desc: "Karides, krema, parmesan", price: 350 },
-                { name: "Pesto", desc: "Özel fesleğen sosu, krema ve parmesan", price: 275 },
-                { name: "Dört Peynirli", desc: "Kaşar, mozarella, parmesan ve cheddar peyniri", price: 285 },
-                { name: "Domatesli Peynirli", desc: "Taze domates, beyaz peynir ve kekik", price: 265 },
-                { name: "Kremalı Mantarlı", desc: "Krema, mantar ve kaşar", price: 250 },
-                { name: "Pestomano", desc: "Özel fesleğen sosu, tavuk, mantar, krema ve parmesan", price: 295 },
-                { name: "Körili Soslu", desc: "Köri sosu, tavuk, krema ve kaşar", price: 275 },
-                { name: "Barbekü Soslu", desc: "Barbekü sosu, tavuk, krema ve kaşar", price: 275 },
-                { name: "Çıtır Tavuklu", desc: "Çıtır tavuk, krema ve barbekü sosu", price: 295 },
-                { name: "Mini Köfteli", desc: "Mini köfte, domates sosu ve kaşar", price: 285 },
-                { name: "Limonlu", desc: "Tavuk, krema, limon sosu ve kaşar", price: 275 },
-                { name: "Sebzeli", desc: "Özel domates sosu, kapya biber, yeşil biber ve kaşar", price: 265 },
-                { name: "Sosisli", desc: "Özel domates sosu, sosis ve kaşar", price: 270 },
-                { name: "Ballı Hardallı", desc: "Ballı hardal sosu, tavuk, krema ve kaşar", price: 285 },
-                { name: "Ispanaklı", desc: "Ispanak, mantar, krema ve parmesan", price: 285 },
-                { name: "Yaz Makarnası (Soğuk Servis)", desc: "Közlenmiş biber, turşu, mısır, hindi füme ve yoğurt", price: 285 }
-            ],
-            tava: [
-                { name: "Köri Soslu Tavuk", desc: "Köri sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 },
-                { name: "Barbekü Soslu Tavuk", desc: "Barbekü sos, yeşil biber, mantar, tavuk ve krema", price: 350 },
-                { name: "Ballı Hardallı Tavuk", desc: "Ballı hardal sos, kapya biber, mantar, mısır, tavuk ve krema", price: 350 },
-                { name: "Misket Köfteli Tava", desc: "Dana misket köfte, kapya biber, domates sosu, yeşil biber", price: 340 },
-                { name: "Pesto Soslu Tavuk", desc: "Fesleğen sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 }
-            ],
-            salata: [
-                { name: "Sezar Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve sezar sos", price: 300 },
-                { name: "Izgara Tavuklu Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve özel sos", price: 300 },
-                { name: "Çıtır Tavuklu Salata", desc: "Akdeniz yeşillikleri ve kızarmış çıtır tavuk", price: 295 },
-                { name: "Ton Balıklı Salata", desc: "Akdeniz yeşillikleri ve ton balığı", price: 305 },
-                { name: "Mini Köfteli Salata", desc: "Akdeniz yeşillikleri ve mini köfte", price: 290 },
-                { name: "Ton Balıklı Salata (Soğuk Servis)", desc: "Özel Akdeniz sosu, turşu, mısır, kapya biber ve ton balığı", price: 285 }
-            ],
-            ekstra: [
-                { name: "Ekstra Malzeme Ekleme", desc: "Krema, Tavuk, Mantar, Kaşar, Parmesan (Makarna, tava yemekleri ya da salatalara ek)", price: 50 }
-            ],
-            icecekler: [
-                { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve Suyu", price: 90 },
-                { name: "Litrelik İçecekler", desc: "Kola ve Portakallı Gazoz", price: 135 },
-                { name: "Küçük Ayran", desc: "Ferahlatıcı Ayran", price: 35 },
-                { name: "Büyük Ayran", desc: "Ferahlatıcı Büyük Boy Ayran", price: 45 },
-                { name: "Şişe İçecekler", desc: "Soda, Gazoz, Limonata, Kola, Portakallı Gazoz", price: 45 },
-                { name: "Su (Pet Şişe)", desc: "0.5L Doğal Kaynak Suyu", price: 20 }
-            ]
+        let currentLang = 'tr';
+        let currentTab = 'makarnalar';
+
+        const uiTranslations = {
+            tr: {
+                tagline: "Dalından Sofranıza",
+                searchPlaceholder: "Menüde lezzet ara...",
+                tabs: { makarnalar: "🍝 Makarnalar", tava: "🥘 Tava Yemekleri", salata: "🥗 Salatalar", ekstra: "🧀 Ekstralar", icecekler: "🥤 İçecekler" },
+                portionTitle: "Porsiyon Tercihleri",
+                portionHalf: "Yarım (0.5x)",
+                portion15: "1.5 Porsiyon",
+                portionDouble: "Double (2x)",
+                qrBtn: "Masa Üstü QR Kodu Görüntüle",
+                qrSubtitle: "Sabit Masa Üstü QR Kod",
+                qrNote: "Bu QR kod sabittir. Güncellemelerde basılı QR kodunuz değişmez.",
+                notFound: "Aradığınız lezzet bulunamadı."
+            },
+            en: {
+                tagline: "From Branch to Table",
+                searchPlaceholder: "Search in menu...",
+                tabs: { makarnalar: "🍝 Pasta", tava: "🥘 Pan Dishes", salata: "🥗 Salads", ekstra: "🧀 Extras", icecekler: "🥤 Drinks" },
+                portionTitle: "Portion Options",
+                portionHalf: "Half (0.5x)",
+                portion15: "1.5 Portion",
+                portionDouble: "Double (2x)",
+                qrBtn: "View Table QR Code",
+                qrSubtitle: "Fixed Tabletop QR Code",
+                qrNote: "This QR code is static. Your printed QR code won't change upon updates.",
+                notFound: "No items found matching your search."
+            }
         };
 
-        let currentTab = 'makarnalar';
+        const menuData = {
+            tr: {
+                makarnalar: [
+                    { name: "Romano", desc: "Krema, mantar, tavuk, kaşar ve kekik", price: 280 },
+                    { name: "Milano", desc: "Krema, kuru domates, tavuk, kaşar ve kekik", price: 305 },
+                    { name: "Bolonez", desc: "Özel domates sosu, dana kıyma ve kaşar", price: 275 },
+                    { name: "Napoliten", desc: "Özel domates sosu ve kaşar", price: 260 },
+                    { name: "Arabiata", desc: "Özel domates sosu, şili biberi ve kaşar", price: 265 },
+                    { name: "Alfredo", desc: "Izgara tavuk, mantar, krema, sarımsak, parmesan ve kekik", price: 310 },
+                    { name: "Karidesli", desc: "Karides, krema, parmesan", price: 350 },
+                    { name: "Pesto", desc: "Özel fesleğen sosu, krema ve parmesan", price: 275 },
+                    { name: "Dört Peynirli", desc: "Kaşar, mozarella, parmesan ve cheddar peyniri", price: 285 },
+                    { name: "Domatesli Peynirli", desc: "Taze domates, beyaz peynir ve kekik", price: 265 },
+                    { name: "Kremalı Mantarlı", desc: "Krema, mantar ve kaşar", price: 250 },
+                    { name: "Pestomano", desc: "Özel fesleğen sosu, tavuk, mantar, krema ve parmesan", price: 295 },
+                    { name: "Körili Soslu", desc: "Köri sosu, tavuk, krema ve kaşar", price: 275 },
+                    { name: "Barbekü Soslu", desc: "Barbekü sosu, tavuk, krema ve kaşar", price: 275 },
+                    { name: "Çıtır Tavuklu", desc: "Çıtır tavuk, krema ve barbekü sosu", price: 295 },
+                    { name: "Mini Köfteli", desc: "Mini köfte, domates sosu ve kaşar", price: 285 },
+                    { name: "Limonlu", desc: "Tavuk, krema, limon sosu ve kaşar", price: 275 },
+                    { name: "Sebzeli", desc: "Özel domates sosu, kapya biber, yeşil biber ve kaşar", price: 265 },
+                    { name: "Sosisli", desc: "Özel domates sosu, sosis ve kaşar", price: 270 },
+                    { name: "Ballı Hardallı", desc: "Ballı hardal sosu, tavuk, krema ve kaşar", price: 285 },
+                    { name: "Ispanaklı", desc: "Ispanak, mantar, krema ve parmesan", price: 285 },
+                    { name: "Yaz Makarnası (Soğuk Servis)", desc: "Közlenmiş biber, turşu, mısır, hindi füme ve yoğurt", price: 285 }
+                ],
+                tava: [
+                    { name: "Köri Soslu Tavuk", desc: "Köri sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 },
+                    { name: "Barbekü Soslu Tavuk", desc: "Barbekü sos, yeşil biber, mantar, tavuk ve krema", price: 350 },
+                    { name: "Ballı Hardallı Tavuk", desc: "Ballı hardal sos, kapya biber, mantar, mısır, tavuk ve krema", price: 350 },
+                    { name: "Misket Köfteli Tava", desc: "Dana misket köfte, kapya biber, domates sosu, yeşil biber", price: 340 },
+                    { name: "Pesto Soslu Tavuk", desc: "Fesleğen sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 }
+                ],
+                salata: [
+                    { name: "Sezar Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve sezar sos", price: 300 },
+                    { name: "Izgara Tavuklu Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve özel sos", price: 300 },
+                    { name: "Çıtır Tavuklu Salata", desc: "Akdeniz yeşillikleri ve kızarmış çıtır tavuk", price: 295 },
+                    { name: "Ton Balıklı Salata", desc: "Akdeniz yeşillikleri ve ton balığı", price: 305 },
+                    { name: "Mini Köfteli Salata", desc: "Akdeniz yeşillikleri ve mini köfte", price: 290 },
+                    { name: "Ton Balıklı Salata (Soğuk Servis)", desc: "Özel Akdeniz sosu, turşu, mısır, kapya biber ve ton balığı", price: 285 }
+                ],
+                ekstra: [
+                    { name: "Ekstra Malzeme Ekleme", desc: "Krema, Tavuk, Mantar, Kaşar, Parmesan (Makarna, tava yemekleri ya da salatalara ek)", price: 50 }
+                ],
+                icecekler: [
+                    { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve Suyu", price: 90 },
+                    { name: "Litrelik İçecekler", desc: "Kola ve Portakallı Gazoz", price: 135 },
+                    { name: "Küçük Ayran", desc: "Ferahlatıcı Ayran", price: 35 },
+                    { name: "Büyük Ayran", desc: "Ferahlatıcı Büyük Boy Ayran", price: 45 },
+                    { name: "Şişe İçecekler", desc: "Soda, Gazoz, Limonata, Kola, Portakallı Gazoz", price: 45 },
+                    { name: "Su (Pet Şişe)", desc: "0.5L Doğal Kaynak Suyu", price: 20 }
+                ]
+            },
+            en: {
+                makarnalar: [
+                    { name: "Romano", desc: "Cream, mushroom, chicken, kashar cheese, thyme", price: 280 },
+                    { name: "Milano", desc: "Cream, sun-dried tomatoes, chicken, kashar cheese, thyme", price: 305 },
+                    { name: "Bolognese", desc: "Special tomato sauce, minced beef, kashar cheese", price: 275 },
+                    { name: "Napolitana", desc: "Special tomato sauce, kashar cheese", price: 260 },
+                    { name: "Arrabbiata", desc: "Special tomato sauce, chili pepper, kashar cheese", price: 265 },
+                    { name: "Alfredo", desc: "Grilled chicken, mushroom, cream, garlic, parmesan, thyme", price: 310 },
+                    { name: "Shrimp Pasta", desc: "Shrimp, cream, parmesan cheese", price: 350 },
+                    { name: "Pesto", desc: "Special basil pesto sauce, cream, parmesan cheese", price: 275 },
+                    { name: "Four Cheese", desc: "Kashar, mozzarella, parmesan, cheddar cheese", price: 285 },
+                    { name: "Tomato & Feta", desc: "Fresh tomatoes, feta cheese, thyme", price: 265 },
+                    { name: "Creamy Mushroom", desc: "Cream, mushroom, kashar cheese", price: 250 },
+                    { name: "Pestomano", desc: "Special basil pesto sauce, chicken, mushroom, cream, parmesan", price: 295 },
+                    { name: "Curry Sauce", desc: "Curry sauce, chicken, cream, kashar cheese", price: 275 },
+                    { name: "BBQ Sauce", desc: "BBQ sauce, chicken, cream, kashar cheese", price: 275 },
+                    { name: "Crispy Chicken", desc: "Crispy chicken, cream, BBQ sauce", price: 295 },
+                    { name: "Mini Meatball", desc: "Mini meatballs, tomato sauce, kashar cheese", price: 285 },
+                    { name: "Lemon Chicken", desc: "Chicken, cream, lemon sauce, kashar cheese", price: 275 },
+                    { name: "Veggie", desc: "Special tomato sauce, capia pepper, green pepper, kashar cheese", price: 265 },
+                    { name: "Sausage", desc: "Special tomato sauce, sausage, kashar cheese", price: 270 },
+                    { name: "Honey Mustard", desc: "Honey mustard sauce, chicken, cream, kashar cheese", price: 285 },
+                    { name: "Spinach", desc: "Spinach, mushroom, cream, parmesan cheese", price: 285 },
+                    { name: "Summer Pasta (Cold)", desc: "Roasted peppers, pickles, corn, smoked turkey, yogurt", price: 285 }
+                ],
+                tava: [
+                    { name: "Curry Chicken Pan", desc: "Curry sauce, green pepper, capia pepper, chicken, cream", price: 350 },
+                    { name: "BBQ Chicken Pan", desc: "BBQ sauce, green pepper, mushroom, chicken, cream", price: 350 },
+                    { name: "Honey Mustard Chicken", desc: "Honey mustard sauce, capia pepper, mushroom, corn, chicken, cream", price: 350 },
+                    { name: "Meatball Pan", desc: "Beef meatballs, capia pepper, tomato sauce, green pepper", price: 340 },
+                    { name: "Pesto Chicken Pan", desc: "Basil pesto sauce, green pepper, capia pepper, chicken, cream", price: 350 }
+                ],
+                salata: [
+                    { name: "Caesar Salad", desc: "Mediterranean greens, grilled chicken, Caesar dressing", price: 300 },
+                    { name: "Grilled Chicken Salad", desc: "Mediterranean greens, grilled chicken, house dressing", price: 300 },
+                    { name: "Crispy Chicken Salad", desc: "Mediterranean greens, crispy fried chicken", price: 295 },
+                    { name: "Tuna Salad", desc: "Mediterranean greens, tuna fish", price: 305 },
+                    { name: "Meatball Salad", desc: "Mediterranean greens, mini beef meatballs", price: 290 },
+                    { name: "Cold Tuna Salad", desc: "Special Mediterranean dressing, pickles, corn, capia pepper, tuna", price: 285 }
+                ],
+                ekstra: [
+                    { name: "Extra Ingredients", desc: "Cream, Chicken, Mushroom, Kashar, Parmesan (Add to pasta, pan or salad)", price: 50 }
+                ],
+                icecekler: [
+                    { name: "Canned Drinks", desc: "Cola, Soda, Orange Soda, Ice Tea, Fruit Juice", price: 90 },
+                    { name: "1 Liter Drinks", desc: "Cola and Orange Soda", price: 135 },
+                    { name: "Small Ayran", desc: "Refreshing yogurt drink", price: 35 },
+                    { name: "Large Ayran", desc: "Refreshing large yogurt drink", price: 45 },
+                    { name: "Glass Bottle Drinks", desc: "Mineral water, Soda, Lemonade, Cola, Orange Soda", price: 45 },
+                    { name: "Water (Plastic Bottle)", desc: "0.5L Natural Spring Water", price: 20 }
+                ]
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = uiTranslations[lang];
+
+            // UI Elements Update
+            document.getElementById('sub-tagline').innerText = t.tagline;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            
+            document.getElementById('tab-makarnalar').innerText = t.tabs.makarnalar;
+            document.getElementById('tab-tava').innerText = t.tabs.tava;
+            document.getElementById('tab-salata').innerText = t.tabs.salata;
+            document.getElementById('tab-ekstra').innerText = t.tabs.ekstra;
+            document.getElementById('tab-icecekler').innerText = t.tabs.icecekler;
+
+            document.getElementById('portion-title').innerText = t.portionTitle;
+            document.getElementById('portion-half').innerText = t.portionHalf;
+            document.getElementById('portion-15').innerText = t.portion15;
+            document.getElementById('portion-double').innerText = t.portionDouble;
+
+            document.getElementById('qr-btn-text').innerText = t.qrBtn;
+            document.getElementById('qr-subtitle').innerText = t.qrSubtitle;
+            document.getElementById('qr-footer-note').innerText = t.qrNote;
+
+            // Toggle Buttons Style
+            if(lang === 'tr') {
+                document.getElementById('lang-tr').className = "px-2.5 py-1 rounded-full transition bg-brand-gold text-black";
+                document.getElementById('lang-en').className = "px-2.5 py-1 rounded-full transition text-gray-400 hover:text-white";
+            } else {
+                document.getElementById('lang-en').className = "px-2.5 py-1 rounded-full transition bg-brand-gold text-black";
+                document.getElementById('lang-tr').className = "px-2.5 py-1 rounded-full transition text-gray-400 hover:text-white";
+            }
+
+            renderMenu(currentTab);
+        }
 
         function renderMenu(category, searchFilter = '') {
             const container = document.getElementById('menuContainer');
@@ -208,7 +333,7 @@
                 portionBanner.classList.add('hidden');
             }
 
-            const items = menuData[category] || [];
+            const items = menuData[currentLang][category] || [];
             const filteredItems = items.filter(item => 
                 item.name.toLowerCase().includes(searchFilter.toLowerCase()) || 
                 item.desc.toLowerCase().includes(searchFilter.toLowerCase())
@@ -217,7 +342,7 @@
             if (filteredItems.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-12 text-gray-500 text-sm">
-                        Aradığınız lezzet bulunamadı.
+                        ${uiTranslations[currentLang].notFound}
                     </div>
                 `;
                 return;
