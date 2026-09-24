@@ -37,25 +37,121 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .tab-active { color: #d4af37; border-bottom: 2px solid #d4af37; font-weight: 700; }
+
+        /* Tava Yemekleri Özel Çerçeve Animasyonu */
+        @keyframes flameGlow {
+            0% { box-shadow: 0 0 8px rgba(255, 69, 0, 0.4); border-color: #ff4500; }
+            50% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.8), inset 0 0 10px rgba(255, 69, 0, 0.3); border-color: #ff8c00; }
+            100% { box-shadow: 0 0 8px rgba(255, 69, 0, 0.4); border-color: #ff4500; }
+        }
+
+        .flame-card {
+            animation: flameGlow 2s infinite alternate ease-in-out;
+        }
+
+        /* Şef ve Duman Animasyonları */
+        @keyframes chefFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1.5deg); }
+        }
+
+        @keyframes steamRise {
+            0% { transform: translateY(0) scaleX(1); opacity: 0.8; }
+            50% { transform: translateY(-10px) scaleX(1.3); opacity: 0.4; }
+            100% { transform: translateY(-20px) scaleX(1.6); opacity: 0; }
+        }
+
+        @keyframes sparkleGlow {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .animate-chef {
+            animation: chefFloat 3.5s ease-in-out infinite;
+        }
+
+        .animate-steam-1 { animation: steamRise 2.2s infinite linear; }
+        .animate-steam-2 { animation: steamRise 2.2s infinite linear 0.7s; }
+        .animate-steam-3 { animation: steamRise 2.2s infinite linear 1.4s; }
+
+        .animate-sparkle {
+            animation: sparkleGlow 2s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-brand-bg text-gray-100 font-sans min-h-screen pb-24 selection:bg-brand-gold selection:text-black">
 
     <!-- Header / Banner -->
-    <header class="relative bg-gradient-to-b from-black via-brand-card to-brand-bg pt-8 pb-6 px-4 border-b border-white/10 text-center shadow-2xl">
-        <!-- Language Switcher -->
-        <div class="absolute top-4 right-4 flex items-center bg-white/10 rounded-full p-1 border border-white/10 text-xs font-bold">
+    <header class="relative bg-gradient-to-b from-black via-brand-card to-brand-bg pt-6 pb-6 px-4 border-b border-white/10 shadow-2xl">
+        <div class="absolute top-4 right-4 flex items-center bg-white/10 rounded-full p-1 border border-white/10 text-xs font-bold z-10">
             <button onclick="setLanguage('tr')" id="lang-tr" class="px-2.5 py-1 rounded-full transition bg-brand-gold text-black">TR</button>
             <button onclick="setLanguage('en')" id="lang-en" class="px-2.5 py-1 rounded-full transition text-gray-400 hover:text-white">EN</button>
         </div>
 
-        <div class="max-w-md mx-auto">
+        <div class="max-w-md mx-auto flex flex-col items-center text-center">
+            
+            <!-- Animasyonlu Şef İllüstrasyonu -->
+            <div class="relative w-36 h-36 mb-1 animate-chef">
+                <!-- Şef SVG -->
+                <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-[0_10px_20px_rgba(212,175,55,0.3)]">
+                    <!-- Parıltı Yıldızları -->
+                    <circle cx="35" cy="45" r="3" fill="#d4af37" class="animate-sparkle" />
+                    <circle cx="165" cy="50" r="2.5" fill="#d4af37" class="animate-sparkle" style="animation-delay: 0.8s" />
+                    <circle cx="175" cy="110" r="3.5" fill="#d4af37" class="animate-sparkle" style="animation-delay: 0.4s" />
+
+                    <!-- Şef Gövdesi ve Elbisesi -->
+                    <path d="M60,180 Q100,165 140,180 L145,200 L55,200 Z" fill="#ffffff" />
+                    <path d="M82,165 L88,200 M112,165 L106,200" stroke="#9e1b1b" stroke-width="3" stroke-linecap="round" />
+                    <!-- Kırmızı Fular -->
+                    <path d="M85,155 Q100,165 115,155 Q100,175 85,155 Z" fill="#9e1b1b" />
+                    
+                    <!-- Kafa / Yüz -->
+                    <circle cx="100" cy="118" r="32" fill="#ffdbac" />
+                    <!-- Bıyık -->
+                    <path d="M82,126 Q92,122 100,128 Q108,122 118,126 Q122,134 100,132 Q78,134 82,126 Z" fill="#3d2314" />
+                    <!-- Gözler (Gülücük Şeklinde) -->
+                    <path d="M86,112 Q91,106 96,112" fill="none" stroke="#3d2314" stroke-width="3" stroke-linecap="round" />
+                    <path d="M104,112 Q109,106 114,112" fill="none" stroke="#3d2314" stroke-width="3" stroke-linecap="round" />
+                    <!-- Yanaklar -->
+                    <circle cx="80" cy="120" r="5" fill="#ff9999" opacity="0.6" />
+                    <circle cx="120" cy="120" r="5" fill="#ff9999" opacity="0.6" />
+                    
+                    <!-- Şef Şapkası -->
+                    <path d="M72,100 L128,100 L124,88 L76,88 Z" fill="#e5e5e5" />
+                    <path d="M70,88 C60,88 58,60 78,58 C80,42 120,42 122,58 C142,60 140,88 130,88 Z" fill="#ffffff" stroke="#f0f0f0" stroke-width="2" />
+                    <path d="M72,94 L128,94" stroke="#9e1b1b" stroke-width="3" />
+
+                    <!-- Duman Animasyon Hatları -->
+                    <g transform="translate(100, 125)">
+                        <path d="M-12,-12 Q-16,-22 -10,-30" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.7" class="animate-steam-1" />
+                        <path d="M0,-15 Q4,-25 -2,-35" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.7" class="animate-steam-2" />
+                        <path d="M12,-12 Q16,-22 10,-30" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.7" class="animate-steam-3" />
+                    </g>
+
+                    <!-- Makarna Tabağı (Ellerde Tutulan) -->
+                    <!-- Kollar -->
+                    <path d="M55,175 Q40,150 70,148" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" />
+                    <path d="M145,175 Q160,150 130,148" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" />
+                    
+                    <!-- Tabak Tabanı -->
+                    <ellipse cx="100" cy="150" rx="42" ry="12" fill="#d4af37" />
+                    <ellipse cx="100" cy="148" rx="38" ry="10" fill="#ffffff" />
+                    
+                    <!-- Lezzetli Makarna (Sarı/Altın Kıvrımlar) -->
+                    <path d="M72,146 Q85,130 100,142 Q115,130 128,146 Q115,152 100,148 Q85,152 72,146 Z" fill="#f3a625" />
+                    <path d="M78,144 Q88,135 98,143" fill="none" stroke="#ffd166" stroke-width="3" stroke-linecap="round" />
+                    <path d="M102,143 Q112,135 122,144" fill="none" stroke="#ffd166" stroke-width="3" stroke-linecap="round" />
+                    <!-- Kiraz Domates & Fesleğen Tanesi -->
+                    <circle cx="94" cy="138" r="4" fill="#9e1b1b" />
+                    <circle cx="108" cy="140" r="3.5" fill="#2a9d8f" />
+                </svg>
+            </div>
+
             <h1 class="font-serif text-3xl font-extrabold text-brand-gold tracking-wide uppercase drop-shadow-md">
                 Mondo Spagetti
             </h1>
             <p id="sub-tagline" class="text-xs text-gray-400 italic mt-1 tracking-widest font-serif">Dalından Sofranıza</p>
             
-            <!-- Quick Info -->
             <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-gray-300">
                 <a href="https://www.mondospagetti.com" target="_blank" class="flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10 transition">
                     <i data-lucide="globe" class="w-3.5 h-3.5 text-brand-gold"></i>
@@ -72,7 +168,6 @@
     <!-- Search & Filters Sticky Bar -->
     <div class="sticky top-0 z-30 bg-brand-bg/95 backdrop-blur-md border-b border-white/10 shadow-lg">
         <div class="max-w-md mx-auto px-4 py-3">
-            <!-- Search Input -->
             <div class="relative">
                 <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                 <input type="text" id="searchInput" oninput="filterItems()" placeholder="Menüde lezzet ara..." 
@@ -90,10 +185,10 @@
         </div>
     </div>
 
-    <!-- Main Content Container -->
+    <!-- Main Content -->
     <main class="max-w-md mx-auto px-4 pt-4">
 
-        <!-- Portion Info Banner (Only visible on Makarnalar) -->
+        <!-- Portion Info Banner -->
         <div id="portionBanner" class="bg-gradient-to-r from-brand-red/30 via-brand-card to-brand-card p-3.5 rounded-2xl border border-brand-red/40 mb-5 shadow-sm">
             <div class="flex items-center gap-2 text-brand-gold font-medium text-xs mb-1">
                 <i data-lucide="info" class="w-4 h-4"></i>
@@ -115,10 +210,10 @@
             </div>
         </div>
 
-        <!-- Menu Category Views -->
+        <!-- Menu Container -->
         <div id="menuContainer"></div>
 
-        <!-- Static Permanent QR Code Modal Trigger -->
+        <!-- QR Code Modal Trigger -->
         <div class="mt-12 text-center border-t border-white/10 pt-8 pb-4">
             <button onclick="openQRModal()" class="inline-flex items-center gap-2 bg-brand-card hover:bg-white/10 text-brand-gold text-xs font-semibold px-4 py-2.5 rounded-xl border border-brand-gold/30 transition">
                 <i data-lucide="qr-code" class="w-4 h-4"></i>
@@ -126,6 +221,20 @@
             </button>
         </div>
     </main>
+
+    <!-- Image Preview Modal -->
+    <div id="mediaModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4" onclick="closeMediaModal()">
+        <div class="max-w-sm w-full relative bg-brand-card rounded-2xl overflow-hidden border border-white/10 shadow-2xl" onclick="event.stopPropagation()">
+            <button onclick="closeMediaModal()" class="absolute right-3 top-3 bg-black/60 text-white rounded-full p-1.5 z-10 border border-white/20">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="mediaContent" class="w-full h-72 bg-black flex items-center justify-center"></div>
+            <div class="p-4 bg-brand-card">
+                <h3 id="mediaTitle" class="font-serif text-lg font-bold text-brand-gold"></h3>
+                <p id="mediaDesc" class="text-xs text-gray-300 mt-1"></p>
+            </div>
+        </div>
+    </div>
 
     <!-- QR Code Modal -->
     <div id="qrModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -135,9 +244,7 @@
             </button>
             <h3 class="font-serif text-lg text-brand-gold font-bold mb-1">Mondo Spagetti</h3>
             <p id="qr-subtitle" class="text-xs text-gray-400 mb-4">Sabit Masa Üstü QR Kod</p>
-            
             <div class="bg-white p-4 rounded-xl inline-block mb-3 shadow-inner" id="qrcode"></div>
-            
             <p class="text-[11px] text-gray-400 break-all mb-4 bg-black/40 p-2 rounded-lg border border-white/5 font-mono">
                 https://mondoqrmenu.con.tc/Mondo/
             </p>
@@ -147,7 +254,6 @@
         </div>
     </div>
 
-    <!-- JavaScript Data & Logic -->
     <script>
         let currentLang = 'tr';
         let currentTab = 'makarnalar';
@@ -184,106 +290,106 @@
         const menuData = {
             tr: {
                 makarnalar: [
-                    { name: "Romano", desc: "Krema, mantar, tavuk, kaşar ve kekik", price: 280 },
-                    { name: "Milano", desc: "Krema, kuru domates, tavuk, kaşar ve kekik", price: 305 },
-                    { name: "Bolonez", desc: "Özel domates sosu, dana kıyma ve kaşar", price: 275 },
-                    { name: "Napoliten", desc: "Özel domates sosu ve kaşar", price: 260 },
-                    { name: "Arabiata", desc: "Özel domates sosu, şili biberi ve kaşar", price: 265 },
-                    { name: "Alfredo", desc: "Izgara tavuk, mantar, krema, sarımsak, parmesan ve kekik", price: 310 },
-                    { name: "Karidesli", desc: "Karides, krema, parmesan", price: 350 },
-                    { name: "Pesto", desc: "Özel fesleğen sosu, krema ve parmesan", price: 275 },
-                    { name: "Dört Peynirli", desc: "Kaşar, mozarella, parmesan ve cheddar peyniri", price: 285 },
-                    { name: "Domatesli Peynirli", desc: "Taze domates, beyaz peynir ve kekik", price: 265 },
-                    { name: "Kremalı Mantarlı", desc: "Krema, mantar ve kaşar", price: 250 },
-                    { name: "Pestomano", desc: "Özel fesleğen sosu, tavuk, mantar, krema ve parmesan", price: 295 },
-                    { name: "Körili Soslu", desc: "Köri sosu, tavuk, krema ve kaşar", price: 275 },
-                    { name: "Barbekü Soslu", desc: "Barbekü sosu, tavuk, krema ve kaşar", price: 275 },
-                    { name: "Çıtır Tavuklu", desc: "Çıtır tavuk, krema ve barbekü sosu", price: 295 },
-                    { name: "Mini Köfteli", desc: "Mini köfte, domates sosu ve kaşar", price: 285 },
-                    { name: "Limonlu", desc: "Tavuk, krema, limon sosu ve kaşar", price: 275 },
-                    { name: "Sebzeli", desc: "Özel domates sosu, kapya biber, yeşil biber ve kaşar", price: 265 },
-                    { name: "Sosisli", desc: "Özel domates sosu, sosis ve kaşar", price: 270 },
-                    { name: "Ballı Hardallı", desc: "Ballı hardal sosu, tavuk, krema ve kaşar", price: 285 },
-                    { name: "Ispanaklı", desc: "Ispanak, mantar, krema ve parmesan", price: 285 },
-                    { name: "Yaz Makarnası (Soğuk Servis)", desc: "Közlenmiş biber, turşu, mısır, hindi füme ve yoğurt", price: 285 }
+                    { name: "Romano", desc: "Krema, mantar, tavuk, kaşar ve kekik", price: 280, image: "https://r.resimlink.com/zIhULcGSJ.jpeg" },
+                    { name: "Milano", desc: "Krema, kuru domates, tavuk, kaşar ve kekik", price: 305, image: "https://r.resimlink.com/l4SAauq.jpeg" },
+                    { name: "Bolonez", desc: "Özel domates sosu, dana kıyma ve kaşar", price: 275, image: "https://r.resimlink.com/vISQkdRf4Np.jpeg" },
+                    { name: "Napoliten", desc: "Özel domates sosu ve kaşar", price: 260, image: "https://r.resimlink.com/VKqXgupvUQNF.jpg" },
+                    { name: "Arabiata", desc: "Özel domates sosu, şili biberi ve kaşar", price: 265, image: "https://r.resimlink.com/GpBLC_c.jpg" },
+                    { name: "Alfredo", desc: "Izgara tavuk, mantar, krema, sarımsak, parmesan ve kekik", price: 310, image: "https://r.resimlink.com/GyX2bJ_1e.jpeg" },
+                    { name: "Karidesli", desc: "Karides, krema, parmesan", price: 350, image: "https://r.resimlink.com/fPQDSHko.jpg" },
+                    { name: "Pesto", desc: "Özel fesleğen sosu, krema ve parmesan", price: 275, image: "https://r.resimlink.com/zkeZ3-bS18C.jpeg" },
+                    { name: "Dört Peynirli", desc: "Kaşar, mozarella, parmesan ve cheddar peyniri", price: 285, image: "https://r.resimlink.com/Kz4n7yblVR.jpg" },
+                    { name: "Domatesli Peynirli", desc: "Taze domates, beyaz peynir ve kekik", price: 265, image: "https://r.resimlink.com/AB9TJ-wk.jpg" },
+                    { name: "Kremalı Mantarlı", desc: "Krema, mantar ve kaşar", price: 250, image: "https://r.resimlink.com/dk-riqGc.jpeg" },
+                    { name: "Pestomano", desc: "Özel fesleğen sosu, tavuk, mantar, krema ve parmesan", price: 295, image: "https://r.resimlink.com/jOu4d9HR.jpeg" },
+                    { name: "Körili Soslu", desc: "Köri sosu, tavuk, krema ve kaşar", price: 275, image: "https://r.resimlink.com/65yHYWc.jpeg" },
+                    { name: "Barbekü Soslu", desc: "Barbekü sosu, tavuk, krema ve kaşar", price: 275, image: "https://r.resimlink.com/_UBzo.jpg" },
+                    { name: "Çıtır Tavuklu", desc: "Çıtır tavuk, krema ve barbekü sosu", price: 295, image: "https://r.resimlink.com/LWo3hrlak2bI.jpg" },
+                    { name: "Mini Köfteli", desc: "Mini köfte, domates sosu ve kaşar", price: 285, image: "https://r.resimlink.com/RYjpNl70KHB1.jpeg" },
+                    { name: "Limonlu", desc: "Tavuk, krema, limon sosu ve kaşar", price: 275, image: "https://r.resimlink.com/uc2z0.jpeg" },
+                    { name: "Sebzeli", desc: "Özel domates sosu, kapya biber, yeşil biber ve kaşar", price: 265, image: "https://r.resimlink.com/CQMLBpe7ErPt.jpg" },
+                    { name: "Sosisli", desc: "Özel domates sosu, sosis ve kaşar", price: 270, image: "https://r.resimlink.com/T7tNrCq-xn.jpg" },
+                    { name: "Ballı Hardallı", desc: "Ballı hardal sosu, tavuk, krema ve kaşar", price: 285, image: "https://r.resimlink.com/cSmbh8gYd.jpg" },
+                    { name: "Ispanaklı", desc: "Ispanak, mantar, krema ve parmesan", price: 285, image: "https://r.resimlink.com/V2MdZ_4ys.jpg" },
+                    { name: "Yaz Makarnası (Soğuk Servis)", desc: "Közlenmiş biber, turşu, mısır, hindi füme ve yoğurt", price: 285, image: "https://r.resimlink.com/ybsUc.jpeg" }
                 ],
                 tava: [
-                    { name: "Köri Soslu Tavuk", desc: "Köri sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 },
-                    { name: "Barbekü Soslu Tavuk", desc: "Barbekü sos, yeşil biber, mantar, tavuk ve krema", price: 350 },
-                    { name: "Ballı Hardallı Tavuk", desc: "Ballı hardal sos, kapya biber, mantar, mısır, tavuk ve krema", price: 350 },
-                    { name: "Misket Köfteli Tava", desc: "Dana misket köfte, kapya biber, domates sosu, yeşil biber", price: 340 },
-                    { name: "Pesto Soslu Tavuk", desc: "Fesleğen sos, yeşil biber, kapya biber, tavuk ve krema", price: 350 }
+                    { name: "Köri Soslu Tavuk", desc: "Köri sos, yeşil biber, kapya biber, tavuk ve krema", price: 350, isFlame: true, image: "https://r.resimlink.com/gQTjvY.jpg" },
+                    { name: "Barbekü Soslu Tavuk", desc: "Barbekü sos, yeşil biber, mantar, tavuk ve krema", price: 350, isFlame: true, image: "https://r.resimlink.com/GSXkj.jpg" },
+                    { name: "Ballı Hardallı Tavuk", desc: "Ballı hardal sos, kapya biber, mantar, mısır, tavuk ve krema", price: 350, isFlame: true, image: "https://r.resimlink.com/Qe5mAUTLvpo.jpg" },
+                    { name: "Misket Köfteli Tava", desc: "Dana misket köfte, kapya biber, domates sosu, yeşil biber", price: 340, isFlame: true, image: "https://r.resimlink.com/b2TpPsekZc8w.jpg" },
+                    { name: "Pesto Soslu Tavuk", desc: "Fesleğen sos, yeşil biber, kapya biber, tavuk ve krema", price: 350, isFlame: true, image: "https://r.resimlink.com/GdnapX.jpg" }
                 ],
                 salata: [
-                    { name: "Sezar Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve sezar sos", price: 300 },
-                    { name: "Izgara Tavuklu Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve özel sos", price: 300 },
-                    { name: "Çıtır Tavuklu Salata", desc: "Akdeniz yeşillikleri ve kızarmış çıtır tavuk", price: 295 },
-                    { name: "Ton Balıklı Salata", desc: "Akdeniz yeşillikleri ve ton balığı", price: 305 },
-                    { name: "Mini Köfteli Salata", desc: "Akdeniz yeşillikleri ve mini köfte", price: 290 },
-                    { name: "Ton Balıklı Salata (Soğuk Servis)", desc: "Özel Akdeniz sosu, turşu, mısır, kapya biber ve ton balığı", price: 285 }
+                    { name: "Sezar Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve sezar sos", price: 300, image: "https://r.resimlink.com/8OztcK0dfeTF.jpeg" },
+                    { name: "Izgara Tavuklu Salata", desc: "Akdeniz yeşillikleri, ızgara tavuk ve özel sos", price: 300, image: "https://r.resimlink.com/lVGaTyL.jpg" },
+                    { name: "Çıtır Tavuklu Salata", desc: "Akdeniz yeşillikleri ve kızarmış çıtır tavuk", price: 295, image: "https://r.resimlink.com/_ahDFJ.jpg" },
+                    { name: "Ton Balıklı Salata", desc: "Akdeniz yeşillikleri ve ton balığı", price: 305, image: "https://r.resimlink.com/T16Sgj.jpeg" },
+                    { name: "Mini Köfteli Salata", desc: "Akdeniz yeşillikleri ve mini köfte", price: 290, image: "https://r.resimlink.com/Ahob8k3.jpg" },
+                    { name: "Ton Balıklı Salata (Soğuk Servis)", desc: "Özel Akdeniz sosu, turşu, mısır, kapya biber ve ton balığı", price: 285, image: "https://r.resimlink.com/T16Sgj.jpeg" }
                 ],
                 ekstra: [
-                    { name: "Ekstra Malzeme Ekleme", desc: "Krema, Tavuk, Mantar, Kaşar, Parmesan (Makarna, tava yemekleri ya da salatalara ek)", price: 50 }
+                    { name: "Ekstra Malzeme Ekleme", desc: "Krema, Tavuk, Mantar, Kaşar, Parmesan (Makarna, tava yemekleri ya da salatalara ek)", price: 50, image: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=600&q=80" }
                 ],
                 icecekler: [
-                    { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve Suyu", price: 90 },
-                    { name: "Litrelik İçecekler", desc: "Kola ve Portakallı Gazoz", price: 135 },
-                    { name: "Küçük Ayran", desc: "Ferahlatıcı Ayran", price: 35 },
-                    { name: "Büyük Ayran", desc: "Ferahlatıcı Büyük Boy Ayran", price: 45 },
-                    { name: "Şişe İçecekler", desc: "Soda, Gazoz, Limonata, Kola, Portakallı Gazoz", price: 45 },
-                    { name: "Su (Pet Şişe)", desc: "0.5L Doğal Kaynak Suyu", price: 20 }
+                    { name: "Kutu İçecekler", desc: "Kola, Gazoz, Portakallı Gazoz, Soğuk Çay, Meyve Suyu", price: 90, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Litrelik İçecekler", desc: "Kola ve Portakallı Gazoz", price: 135, image: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Küçük Ayran", desc: "Ferahlatıcı Ayran", price: 35, image: "https://images.unsplash.com/photo-1559839914-11aae62e50fd?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Büyük Ayran", desc: "Ferahlatıcı Büyük Boy Ayran", price: 45, image: "https://images.unsplash.com/photo-1559839914-11aae62e50fd?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Şişe İçecekler", desc: "Soda, Gazoz, Limonata, Kola, Portakallı Gazoz", price: 45, image: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Su (Pet Şişe)", desc: "0.5L Doğal Kaynak Suyu", price: 20, image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80" }
                 ]
             },
             en: {
                 makarnalar: [
-                    { name: "Romano", desc: "Cream, mushroom, chicken, kashar cheese, thyme", price: 280 },
-                    { name: "Milano", desc: "Cream, sun-dried tomatoes, chicken, kashar cheese, thyme", price: 305 },
-                    { name: "Bolognese", desc: "Special tomato sauce, minced beef, kashar cheese", price: 275 },
-                    { name: "Napolitana", desc: "Special tomato sauce, kashar cheese", price: 260 },
-                    { name: "Arrabbiata", desc: "Special tomato sauce, chili pepper, kashar cheese", price: 265 },
-                    { name: "Alfredo", desc: "Grilled chicken, mushroom, cream, garlic, parmesan, thyme", price: 310 },
-                    { name: "Shrimp Pasta", desc: "Shrimp, cream, parmesan cheese", price: 350 },
-                    { name: "Pesto", desc: "Special basil pesto sauce, cream, parmesan cheese", price: 275 },
-                    { name: "Four Cheese", desc: "Kashar, mozzarella, parmesan, cheddar cheese", price: 285 },
-                    { name: "Tomato & Feta", desc: "Fresh tomatoes, feta cheese, thyme", price: 265 },
-                    { name: "Creamy Mushroom", desc: "Cream, mushroom, kashar cheese", price: 250 },
-                    { name: "Pestomano", desc: "Special basil pesto sauce, chicken, mushroom, cream, parmesan", price: 295 },
-                    { name: "Curry Sauce", desc: "Curry sauce, chicken, cream, kashar cheese", price: 275 },
-                    { name: "BBQ Sauce", desc: "BBQ sauce, chicken, cream, kashar cheese", price: 275 },
-                    { name: "Crispy Chicken", desc: "Crispy chicken, cream, BBQ sauce", price: 295 },
-                    { name: "Mini Meatball", desc: "Mini meatballs, tomato sauce, kashar cheese", price: 285 },
-                    { name: "Lemon Chicken", desc: "Chicken, cream, lemon sauce, kashar cheese", price: 275 },
-                    { name: "Veggie", desc: "Special tomato sauce, capia pepper, green pepper, kashar cheese", price: 265 },
-                    { name: "Sausage", desc: "Special tomato sauce, sausage, kashar cheese", price: 270 },
-                    { name: "Honey Mustard", desc: "Honey mustard sauce, chicken, cream, kashar cheese", price: 285 },
-                    { name: "Spinach", desc: "Spinach, mushroom, cream, parmesan cheese", price: 285 },
-                    { name: "Summer Pasta (Cold)", desc: "Roasted peppers, pickles, corn, smoked turkey, yogurt", price: 285 }
+                    { name: "Romano", desc: "Cream, mushroom, chicken, kashar cheese, thyme", price: 280, image: "https://r.resimlink.com/zIhULcGSJ.jpeg" },
+                    { name: "Milano", desc: "Cream, sun-dried tomatoes, chicken, kashar cheese, thyme", price: 305, image: "https://r.resimlink.com/l4SAauq.jpeg" },
+                    { name: "Bolognese", desc: "Special tomato sauce, minced beef, kashar cheese", price: 275, image: "https://r.resimlink.com/vISQkdRf4Np.jpeg" },
+                    { name: "Napolitana", desc: "Special tomato sauce, kashar cheese", price: 260, image: "https://r.resimlink.com/VKqXgupvUQNF.jpg" },
+                    { name: "Arrabbiata", desc: "Special tomato sauce, chili pepper, kashar cheese", price: 265, image: "https://r.resimlink.com/GpBLC_c.jpg" },
+                    { name: "Alfredo", desc: "Grilled chicken, mushroom, cream, garlic, parmesan, thyme", price: 310, image: "https://r.resimlink.com/GyX2bJ_1e.jpeg" },
+                    { name: "Shrimp Pasta", desc: "Shrimp, cream, parmesan cheese", price: 350, image: "https://r.resimlink.com/fPQDSHko.jpg" },
+                    { name: "Pesto", desc: "Special basil pesto sauce, cream, parmesan cheese", price: 275, image: "https://r.resimlink.com/zkeZ3-bS18C.jpeg" },
+                    { name: "Four Cheese", desc: "Kashar, mozzarella, parmesan, cheddar cheese", price: 285, image: "https://r.resimlink.com/Kz4n7yblVR.jpg" },
+                    { name: "Tomato & Feta", desc: "Fresh tomatoes, feta cheese, thyme", price: 265, image: "https://r.resimlink.com/AB9TJ-wk.jpg" },
+                    { name: "Creamy Mushroom", desc: "Cream, mushroom, kashar cheese", price: 250, image: "https://r.resimlink.com/dk-riqGc.jpeg" },
+                    { name: "Pestomano", desc: "Special basil pesto sauce, chicken, mushroom, cream, parmesan", price: 295, image: "https://r.resimlink.com/jOu4d9HR.jpeg" },
+                    { name: "Curry Sauce", desc: "Curry sauce, chicken, cream, kashar cheese", price: 275, image: "https://r.resimlink.com/65yHYWc.jpeg" },
+                    { name: "BBQ Sauce", desc: "BBQ sauce, chicken, cream, kashar cheese", price: 275, image: "https://r.resimlink.com/_UBzo.jpg" },
+                    { name: "Crispy Chicken", desc: "Crispy chicken, cream, BBQ sauce", price: 295, image: "https://r.resimlink.com/LWo3hrlak2bI.jpg" },
+                    { name: "Mini Meatball", desc: "Mini meatballs, tomato sauce, kashar cheese", price: 285, image: "https://r.resimlink.com/RYjpNl70KHB1.jpeg" },
+                    { name: "Lemon Chicken", desc: "Chicken, cream, lemon sauce, kashar cheese", price: 275, image: "https://r.resimlink.com/uc2z0.jpeg" },
+                    { name: "Veggie", desc: "Special tomato sauce, capia pepper, green pepper, kashar cheese", price: 265, image: "https://r.resimlink.com/CQMLBpe7ErPt.jpg" },
+                    { name: "Sausage", desc: "Special tomato sauce, sausage, kashar cheese", price: 270, image: "https://r.resimlink.com/T7tNrCq-xn.jpg" },
+                    { name: "Honey Mustard", desc: "Honey mustard sauce, chicken, cream, kashar cheese", price: 285, image: "https://r.resimlink.com/cSmbh8gYd.jpg" },
+                    { name: "Spinach", desc: "Spinach, mushroom, cream, parmesan cheese", price: 285, image: "https://r.resimlink.com/V2MdZ_4ys.jpg" },
+                    { name: "Summer Pasta (Cold)", desc: "Roasted peppers, pickles, corn, smoked turkey, yogurt", price: 285, image: "https://r.resimlink.com/ybsUc.jpeg" }
                 ],
                 tava: [
-                    { name: "Curry Chicken Pan", desc: "Curry sauce, green pepper, capia pepper, chicken, cream", price: 350 },
-                    { name: "BBQ Chicken Pan", desc: "BBQ sauce, green pepper, mushroom, chicken, cream", price: 350 },
-                    { name: "Honey Mustard Chicken", desc: "Honey mustard sauce, capia pepper, mushroom, corn, chicken, cream", price: 350 },
-                    { name: "Meatball Pan", desc: "Beef meatballs, capia pepper, tomato sauce, green pepper", price: 340 },
-                    { name: "Pesto Chicken Pan", desc: "Basil pesto sauce, green pepper, capia pepper, chicken, cream", price: 350 }
+                    { name: "Curry Chicken Pan", desc: "Curry sauce, green pepper, capia pepper, chicken, cream", price: 350, isFlame: true, image: "https://r.resimlink.com/gQTjvY.jpg" },
+                    { name: "BBQ Chicken Pan", desc: "BBQ sauce, green pepper, mushroom, chicken, cream", price: 350, isFlame: true, image: "https://r.resimlink.com/GSXkj.jpg" },
+                    { name: "Honey Mustard Chicken", desc: "Honey mustard sauce, capia pepper, mushroom, corn, chicken, cream", price: 350, isFlame: true, image: "https://r.resimlink.com/Qe5mAUTLvpo.jpg" },
+                    { name: "Meatball Pan", desc: "Beef meatballs, capia pepper, tomato sauce, green pepper", price: 340, isFlame: true, image: "https://r.resimlink.com/b2TpPsekZc8w.jpg" },
+                    { name: "Pesto Chicken Pan", desc: "Basil pesto sauce, green pepper, capia pepper, chicken, cream", price: 350, isFlame: true, image: "https://r.resimlink.com/GdnapX.jpg" }
                 ],
                 salata: [
-                    { name: "Caesar Salad", desc: "Mediterranean greens, grilled chicken, Caesar dressing", price: 300 },
-                    { name: "Grilled Chicken Salad", desc: "Mediterranean greens, grilled chicken, house dressing", price: 300 },
-                    { name: "Crispy Chicken Salad", desc: "Mediterranean greens, crispy fried chicken", price: 295 },
-                    { name: "Tuna Salad", desc: "Mediterranean greens, tuna fish", price: 305 },
-                    { name: "Meatball Salad", desc: "Mediterranean greens, mini beef meatballs", price: 290 },
-                    { name: "Cold Tuna Salad", desc: "Special Mediterranean dressing, pickles, corn, capia pepper, tuna", price: 285 }
+                    { name: "Caesar Salad", desc: "Mediterranean greens, grilled chicken, Caesar dressing", price: 300, image: "https://r.resimlink.com/8OztcK0dfeTF.jpeg" },
+                    { name: "Grilled Chicken Salad", desc: "Mediterranean greens, grilled chicken, house dressing", price: 300, image: "https://r.resimlink.com/lVGaTyL.jpg" },
+                    { name: "Crispy Chicken Salad", desc: "Mediterranean greens, crispy fried chicken", price: 295, image: "https://r.resimlink.com/_ahDFJ.jpg" },
+                    { name: "Tuna Salad", desc: "Mediterranean greens, tuna fish", price: 305, image: "https://r.resimlink.com/T16Sgj.jpeg" },
+                    { name: "Meatball Salad", desc: "Mediterranean greens, mini beef meatballs", price: 290, image: "https://r.resimlink.com/Ahob8k3.jpg" },
+                    { name: "Cold Tuna Salad", desc: "Special Mediterranean dressing, pickles, corn, capia pepper, tuna", price: 285, image: "https://r.resimlink.com/T16Sgj.jpeg" }
                 ],
                 ekstra: [
-                    { name: "Extra Ingredients", desc: "Cream, Chicken, Mushroom, Kashar, Parmesan (Add to pasta, pan or salad)", price: 50 }
+                    { name: "Extra Ingredients", desc: "Cream, Chicken, Mushroom, Kashar, Parmesan (Add to pasta, pan or salad)", price: 50, image: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&w=600&q=80" }
                 ],
                 icecekler: [
-                    { name: "Canned Drinks", desc: "Cola, Soda, Orange Soda, Ice Tea, Fruit Juice", price: 90 },
-                    { name: "1 Liter Drinks", desc: "Cola and Orange Soda", price: 135 },
-                    { name: "Small Ayran", desc: "Refreshing yogurt drink", price: 35 },
-                    { name: "Large Ayran", desc: "Refreshing large yogurt drink", price: 45 },
-                    { name: "Glass Bottle Drinks", desc: "Mineral water, Soda, Lemonade, Cola, Orange Soda", price: 45 },
-                    { name: "Water (Plastic Bottle)", desc: "0.5L Natural Spring Water", price: 20 }
+                    { name: "Canned Drinks", desc: "Cola, Soda, Orange Soda, Ice Tea, Fruit Juice", price: 90, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80" },
+                    { name: "1 Liter Drinks", desc: "Cola and Orange Soda", price: 135, image: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Small Ayran", desc: "Refreshing yogurt drink", price: 35, image: "https://images.unsplash.com/photo-1559839914-11aae62e50fd?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Large Ayran", desc: "Refreshing large yogurt drink", price: 45, image: "https://images.unsplash.com/photo-1559839914-11aae62e50fd?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Glass Bottle Drinks", desc: "Mineral water, Soda, Lemonade, Cola, Orange Soda", price: 45, image: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=600&q=80" },
+                    { name: "Water (Plastic Bottle)", desc: "0.5L Natural Spring Water", price: 20, image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80" }
                 ]
             }
         };
@@ -292,7 +398,6 @@
             currentLang = lang;
             const t = uiTranslations[lang];
 
-            // UI Elements Update
             document.getElementById('sub-tagline').innerText = t.tagline;
             document.getElementById('searchInput').placeholder = t.searchPlaceholder;
             
@@ -311,7 +416,6 @@
             document.getElementById('qr-subtitle').innerText = t.qrSubtitle;
             document.getElementById('qr-footer-note').innerText = t.qrNote;
 
-            // Toggle Buttons Style
             if(lang === 'tr') {
                 document.getElementById('lang-tr').className = "px-2.5 py-1 rounded-full transition bg-brand-gold text-black";
                 document.getElementById('lang-en').className = "px-2.5 py-1 rounded-full transition text-gray-400 hover:text-white";
@@ -340,29 +444,72 @@
             );
 
             if (filteredItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500 text-sm">
-                        ${uiTranslations[currentLang].notFound}
-                    </div>
-                `;
+                container.innerHTML = `<div class="text-center py-12 text-gray-500 text-sm">${uiTranslations[currentLang].notFound}</div>`;
                 return;
             }
 
-            container.innerHTML = filteredItems.map(item => `
-                <div class="bg-brand-card border border-white/5 rounded-2xl p-4 mb-3 flex justify-between items-start gap-4 hover:border-brand-gold/30 transition shadow-sm">
-                    <div class="flex-1">
-                        <h3 class="font-bold text-base text-white font-serif tracking-wide">${item.name}</h3>
-                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">${item.desc}</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="inline-block bg-black/40 text-brand-gold font-bold text-sm px-3 py-1.5 rounded-xl border border-brand-gold/20">
-                            ${item.price} ₺
-                        </span>
-                    </div>
-                </div>
-            `).join('');
+            container.innerHTML = filteredItems.map(item => {
+                if (item.image) {
+                    const cardClass = item.isFlame 
+                        ? "bg-brand-card border rounded-2xl overflow-hidden mb-4 flame-card shadow-lg flex flex-col" 
+                        : "bg-brand-card border border-white/10 rounded-2xl overflow-hidden mb-4 shadow-sm hover:border-brand-gold/30 transition flex flex-col";
+                    
+                    return `
+                        <div class="${cardClass}">
+                            <div class="w-full h-44 overflow-hidden relative cursor-pointer group" onclick="openMediaModal('${item.name}', '${item.desc}', '${item.image}')">
+                                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1c1c1e/d4af37?text=Gorsel+Bulunamadi';">
+                                <div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded-lg flex items-center gap-1 border border-white/10">
+                                    <i data-lucide="maximize-2" class="w-3 h-3"></i> Büyüt
+                                </div>
+                            </div>
+                            <div class="p-4 flex flex-col justify-between flex-1">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <h3 class="font-bold text-base text-white font-serif tracking-wide">${item.name}</h3>
+                                    <span class="bg-black/50 text-brand-gold font-bold text-sm px-3 py-1 rounded-xl border border-brand-gold/20 whitespace-nowrap">
+                                        ${item.price} ₺
+                                    </span>
+                                </div>
+                                <p class="text-xs text-gray-400 leading-relaxed">${item.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const rowClass = item.isFlame
+                        ? "bg-brand-card border rounded-2xl p-4 mb-3 flex justify-between items-start gap-4 flame-card shadow-lg"
+                        : "bg-brand-card border border-white/5 rounded-2xl p-4 mb-3 flex justify-between items-start gap-4 hover:border-brand-gold/30 transition shadow-sm";
+                    
+                    return `
+                        <div class="${rowClass}">
+                            <div class="flex-1">
+                                <h3 class="font-bold text-base text-white font-serif tracking-wide">${item.name}</h3>
+                                <p class="text-xs text-gray-400 mt-1 leading-relaxed">${item.desc}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block bg-black/40 text-brand-gold font-bold text-sm px-3 py-1.5 rounded-xl border border-brand-gold/20 whitespace-nowrap">
+                                    ${item.price} ₺
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
 
             lucide.createIcons();
+        }
+
+        function openMediaModal(title, desc, image) {
+            const modal = document.getElementById('mediaModal');
+            const content = document.getElementById('mediaContent');
+            document.getElementById('mediaTitle').innerText = title;
+            document.getElementById('mediaDesc').innerText = desc;
+
+            content.innerHTML = `<img src="${image}" alt="${title}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1c1c1e/d4af37?text=Gorsel+Bulunamadi';">`;
+            modal.classList.remove('hidden');
+        }
+
+        function closeMediaModal() {
+            document.getElementById('mediaModal').classList.add('hidden');
+            document.getElementById('mediaContent').innerHTML = '';
         }
 
         function switchTab(tab) {
